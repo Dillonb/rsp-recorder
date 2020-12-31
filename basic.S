@@ -130,63 +130,79 @@ acc_l_e7: .word 0,0,0,0
 vcc_e0: .half 0
 vco_e0: .half 0
 vce_e0: .half 0
+pad_e0: .half 0
 
 vcc_e1: .half 0
 vco_e1: .half 0
 vce_e1: .half 0
+pad_e1: .half 0
 
 vcc_e2: .half 0
 vco_e2: .half 0
 vce_e2: .half 0
+pad_e2: .half 0
 
 vcc_e3: .half 0
 vco_e3: .half 0
 vce_e3: .half 0
+pad_e3: .half 0
 
 vcc_e4: .half 0
 vco_e4: .half 0
 vce_e4: .half 0
+pad_e4: .half 0
 
 vcc_e5: .half 0
 vco_e5: .half 0
 vce_e5: .half 0
+pad_e5: .half 0
 
 vcc_e6: .half 0
 vco_e6: .half 0
 vce_e6: .half 0
+pad_e6: .half 0
 
 vcc_e7: .half 0
 vco_e7: .half 0
 vce_e7: .half 0
+pad_e7: .half 0
 
 vcc_e8: .half 0
 vco_e8: .half 0
 vce_e8: .half 0
+pad_e8: .half 0
 
 vcc_e9: .half 0
 vco_e9: .half 0
 vce_e9: .half 0
+pad_e9: .half 0
 
 vcc_e10: .half 0
 vco_e10: .half 0
 vce_e10: .half 0
+pad_e10: .half 0
 
 vcc_e11: .half 0
 vco_e11: .half 0
 vce_e11: .half 0
+pad_e11: .half 0
 
 vcc_e12: .half 0
 vco_e12: .half 0
 vce_e12: .half 0
+pad_e12: .half 0
 
 vcc_e13: .half 0
 vco_e13: .half 0
 vce_e13: .half 0
+pad_e13: .half 0
 
 vcc_e14: .half 0
 vco_e14: .half 0
 vce_e14: .half 0
+pad_e14: .half 0
 
 vcc_e15: .half 0
 vco_e15: .half 0
 vce_e15: .half 0
+pad_e15: .half 0

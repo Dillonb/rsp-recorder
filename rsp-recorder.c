@@ -6,6 +6,8 @@
 #include <libdragon.h>
 #include <rsp.h>
 
+#include "bios.h"
+
 extern const void __basic_ucode_data_start;
 extern const void __basic_ucode_start;
 extern const void __basic_ucode_end;
@@ -42,7 +44,8 @@ typedef struct v_result {
 typedef struct flag_result {
     half vcc;
     half vco;
-    byte vce;
+    half vce;
+    half padding;
 } flag_result_t;
 
 struct {
@@ -55,14 +58,20 @@ struct {
     flag_result_t flag_elements[16];
 } testcase;
 
-void print_vecr(v128_t* r) {
+_Static_assert(sizeof(testcase) ==
+                       (16 * 3) +      // zero, arg1, arg2
+                       (16 * 4 * 16) + // 4x res, acch, accm, accl * 16
+                       (8 * 16), // 16x flag_result_t (5 bytes with 3 bytes padding)
+                       "Testcase blob is expected size");
+
+void print_v128(v128_t* r) {
     printf("%04X%04X%04X%04X%04X%04X%04X%04X",
            r->elements[0], r->elements[1], r->elements[2], r->elements[3],
            r->elements[4], r->elements[5], r->elements[6], r->elements[7]);
 }
 
-void print_vecr_ln(v128_t* r) {
-    print_vecr(r);
+void print_v128_ln(v128_t* r) {
+    print_v128(r);
     printf("\n");
 }
 
@@ -86,47 +95,53 @@ int main(void) {
     load_data((void*)&__basic_ucode_data_start, data_size);
     load_ucode((void*)&__basic_ucode_start, ucode_size);
 
+    bi_init();
+
     console_clear();
 
-    memset(&testcase, 0, sizeof(testcase));
+    printf("Ready!\n");
 
-    testcase.arg1.elements[0] = 0x0001;
-    testcase.arg1.elements[1] = 0x0001;
-    testcase.arg1.elements[2] = 0x0001;
-    testcase.arg1.elements[3] = 0x0001;
-    testcase.arg1.elements[4] = 0x0001;
-    testcase.arg1.elements[5] = 0x0001;
-    testcase.arg1.elements[6] = 0x0001;
-    testcase.arg1.elements[7] = 0x0001;
+    console_render();
 
-    testcase.arg2.elements[0] = 0x0000;
-    testcase.arg2.elements[1] = 0x0001;
-    testcase.arg2.elements[2] = 0x0002;
-    testcase.arg2.elements[3] = 0x0003;
-    testcase.arg2.elements[4] = 0x0004;
-    testcase.arg2.elements[5] = 0x0005;
-    testcase.arg2.elements[6] = 0x0006;
-    testcase.arg2.elements[7] = 0x0007;
-
-    load_data(&testcase, sizeof(testcase));
-    run_ucode();
-
-    while(1) {
-        bool displayed_results = false;
-        if (broke && !displayed_results) {
-            read_data(&testcase, sizeof(testcase));
-            broke = false;
-
-            print_vecr_ln(&testcase.arg1);
-            print_vecr_ln(&testcase.arg2);
-            printf("\n");
-            for (int e = 0; e < 16; e++) {
-                printf("VADD e%d\n", e);
-                print_vecr_ln(&testcase.result_elements[e].res);
-            }
-
-            displayed_results = true;
+    while (1) {
+        while (!bi_usb_can_rd()) {
+            console_render();
         }
+        memset(&testcase, 0, sizeof(testcase));
+        bi_usb_rd(&testcase.arg1, sizeof(v128_t));
+        while (!bi_usb_can_rd()) {
+            console_render();
+        }
+        bi_usb_rd(&testcase.arg2, sizeof(v128_t));
+        print_v128_ln(&testcase.arg1);
+        print_v128_ln(&testcase.arg2);
+
+        load_data(&testcase, sizeof(testcase));
+        run_ucode();
+
+        while (!broke) {
+            console_render();
+        }
+
+        read_data(&testcase, sizeof(testcase));
+        broke = false;
+
+        printf("Result:\n");
+        print_v128_ln(&testcase.result_elements[0].res);
+        printf("\n");
+
+        for (int e = 0; e < 16; e++) {
+            bi_usb_wr(&testcase.result_elements[e].res, sizeof(v128_t));
+            //bi_usb_wr(&testcase.result_elements[e].acch, sizeof(v128_t));
+            //bi_usb_wr(&testcase.result_elements[e].accm, sizeof(v128_t));
+            //bi_usb_wr(&testcase.result_elements[e].accl, sizeof(v128_t));
+        }
+        /*
+        for (int e = 0; e < 16; e++) {
+            bi_usb_wr(&testcase.flag_elements[e].res, sizeof(v128_t));
+        }
+         */
+
         console_render();
     }
 }

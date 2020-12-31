@@ -26,14 +26,26 @@ PROG_NAME = rsp-recorder
 
 all: $(PROG_NAME)$(ROM_EXTENSION)
 
+emulator: all
+	n64 $(PROG_NAME)$(ROM_EXTENSION)
+
+console: all
+	UNFLoader -r $(PROG_NAME)$(ROM_EXTENSION)
+
 $(PROG_NAME)$(ROM_EXTENSION): $(PROG_NAME).elf
 	$(OBJCOPY) $(PROG_NAME).elf $(PROG_NAME).bin -O binary
 	rm -f $(PROG_NAME)$(ROM_EXTENSION)
 	$(N64TOOL) $(N64_FLAGS) -t "RSP Recorder" $(PROG_NAME).bin
 	$(CHKSUM64PATH) $(PROG_NAME)$(ROM_EXTENSION)
 
-$(PROG_NAME).elf : $(PROG_NAME).o basic.o
-	$(LD) -o $(PROG_NAME).elf $(PROG_NAME).o basic.o $(LINK_FLAGS)
+$(PROG_NAME).elf : $(PROG_NAME).o basic.o bios.o sys.o
+	$(LD) -o $(PROG_NAME).elf $(PROG_NAME).o basic.o bios.o sys.o $(LINK_FLAGS)
+
+bios.o: bios.c bios.h
+	$(CC) -c $(CFLAGS) -o bios.o bios.c
+
+sys.o: sys.c sys.h
+	$(CC) -c $(CFLAGS) -o sys.o sys.c
 
 text.section.bin data.section.bin: basic.S
 	$(CC) -c -o tmp.o $^
