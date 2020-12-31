@@ -127,6 +127,46 @@ acc_h_e7: .word 0,0,0,0
 acc_m_e7: .word 0,0,0,0
 acc_l_e7: .word 0,0,0,0
 
+res_e8:   .word 0,0,0,0
+acc_h_e8: .word 0,0,0,0
+acc_m_e8: .word 0,0,0,0
+acc_l_e8: .word 0,0,0,0
+
+res_e9:   .word 0,0,0,0
+acc_h_e9: .word 0,0,0,0
+acc_m_e9: .word 0,0,0,0
+acc_l_e9: .word 0,0,0,0
+
+res_e10:   .word 0,0,0,0
+acc_h_e10: .word 1,0,0,0
+acc_m_e10: .word 1,0,0,0
+acc_l_e10: .word 1,0,0,0
+
+res_e11:   .word 0,0,0,0
+acc_h_e11: .word 1,0,0,0
+acc_m_e11: .word 1,0,0,0
+acc_l_e11: .word 1,0,0,0
+
+res_e12:   .word 0,0,0,0
+acc_h_e12: .word 1,0,0,0
+acc_m_e12: .word 1,0,0,0
+acc_l_e12: .word 1,0,0,0
+
+res_e13:   .word 0,0,0,0
+acc_h_e13: .word 1,0,0,0
+acc_m_e13: .word 1,0,0,0
+acc_l_e13: .word 1,0,0,0
+
+res_e14:   .word 0,0,0,0
+acc_h_e14: .word 1,0,0,0
+acc_m_e14: .word 1,0,0,0
+acc_l_e14: .word 1,0,0,0
+
+res_e15:   .word 0,0,0,0
+acc_h_e15: .word 1,0,0,0
+acc_m_e15: .word 1,0,0,0
+acc_l_e15: .word 1,0,0,0
+
 vcc_e0: .half 0
 vco_e0: .half 0
 vce_e0: .half 0
