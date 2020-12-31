@@ -59,7 +59,7 @@ deadloop:
 saveResults:
     sqv $v03, 0, 0, $2
     // acc_h
-    vsar $v03, $v00, $v00, 0x7
+    vsar $v03, $v00, $v00, 0x8
     sqv $v03, 0, 0, $3
     // acc_m
     vsar $v03, $v00, $v00, 0x9
