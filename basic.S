@@ -16,198 +16,39 @@ lqv $v01, 0, 0, $2
 la $2, arg2
 lqv $v02, 0, 0, $2
 
+.macro runOp element, resAddr, acchAddr, accmAddr, acclAddr, vccAddr, vcoAddr, vceAddr
+    vmudm $v00, $v00, $v00, 0 // Clear accumulator
+    vadd $v03, $v01, $v02, \element
+    la $2, \resAddr
+    la $3, \acchAddr
+    la $4, \accmAddr
+    la $5, \acclAddr
+    la $6, \vccAddr
+    la $7, \vcoAddr
+    la $8, \vceAddr
+    jal saveResults
+    nop
+.endm
+
+
+
 // Run instruction once for each broadcast modifier
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 0
-la $2, res_e0
-la $3, acc_h_e0
-la $4, acc_m_e0
-la $5, acc_l_e0
-la $6, vcc_e0
-la $7, vco_e0
-la $8, vce_e0
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 1
-la $2, res_e1
-la $3, acc_h_e1
-la $4, acc_m_e1
-la $5, acc_l_e1
-la $6, vcc_e1
-la $7, vco_e1
-la $8, vce_e1
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 2
-la $2, res_e2
-la $3, acc_h_e2
-la $4, acc_m_e2
-la $5, acc_l_e2
-la $6, vcc_e2
-la $7, vco_e2
-la $8, vce_e2
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 3
-la $2, res_e3
-la $3, acc_h_e3
-la $4, acc_m_e3
-la $5, acc_l_e3
-la $6, vcc_e3
-la $7, vco_e3
-la $8, vce_e3
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 4
-la $2, res_e4
-la $3, acc_h_e4
-la $4, acc_m_e4
-la $5, acc_l_e4
-la $6, vcc_e4
-la $7, vco_e4
-la $8, vce_e4
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 5
-la $2, res_e5
-la $3, acc_h_e5
-la $4, acc_m_e5
-la $5, acc_l_e5
-la $6, vcc_e5
-la $7, vco_e5
-la $8, vce_e5
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 6
-la $2, res_e6
-la $3, acc_h_e6
-la $4, acc_m_e6
-la $5, acc_l_e6
-la $6, vcc_e6
-la $7, vco_e6
-la $8, vce_e6
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 7
-la $2, res_e7
-la $3, acc_h_e7
-la $4, acc_m_e7
-la $5, acc_l_e7
-la $6, vcc_e7
-la $7, vco_e7
-la $8, vce_e7
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 8
-la $2, res_e8
-la $3, acc_h_e8
-la $4, acc_m_e8
-la $5, acc_l_e8
-la $6, vcc_e8
-la $7, vco_e8
-la $8, vce_e8
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 9
-la $2, res_e9
-la $3, acc_h_e9
-la $4, acc_m_e9
-la $5, acc_l_e9
-la $6, vcc_e9
-la $7, vco_e9
-la $8, vce_e9
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 10
-la $2, res_e10
-la $3, acc_h_e10
-la $4, acc_m_e10
-la $5, acc_l_e10
-la $6, vcc_e10
-la $7, vco_e10
-la $8, vce_e10
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 11
-la $2, res_e11
-la $3, acc_h_e11
-la $4, acc_m_e11
-la $5, acc_l_e11
-la $6, vcc_e11
-la $7, vco_e11
-la $8, vce_e11
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 12
-la $2, res_e12
-la $3, acc_h_e12
-la $4, acc_m_e12
-la $5, acc_l_e12
-la $6, vcc_e12
-la $7, vco_e12
-la $8, vce_e12
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 13
-la $2, res_e13
-la $3, acc_h_e13
-la $4, acc_m_e13
-la $5, acc_l_e13
-la $6, vcc_e13
-la $7, vco_e13
-la $8, vce_e13
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 14
-la $2, res_e14
-la $3, acc_h_e14
-la $4, acc_m_e14
-la $5, acc_l_e14
-la $6, vcc_e14
-la $7, vco_e14
-la $8, vce_e14
-jal saveResults
-nop
-
-vmudm $v00, $v00, $v00, 0 // Clear accumulator
-vadd $v03, $v01, $v02, 15
-la $2, res_e15
-la $3, acc_h_e15
-la $4, acc_m_e15
-la $5, acc_l_e15
-la $6, vcc_e15
-la $7, vco_e15
-la $8, vce_e15
-jal saveResults
-nop
+runOp 0, res_e0, acc_h_e0, acc_m_e0, acc_l_e0, vcc_e0, vco_e0, vce_e0
+runOp 1, res_e1, acc_h_e1, acc_m_e1, acc_l_e1, vcc_e1, vco_e1, vce_e1
+runOp 2, res_e2, acc_h_e2, acc_m_e2, acc_l_e2, vcc_e2, vco_e2, vce_e2
+runOp 3, res_e3, acc_h_e3, acc_m_e3, acc_l_e3, vcc_e3, vco_e3, vce_e3
+runOp 4, res_e4, acc_h_e4, acc_m_e4, acc_l_e4, vcc_e4, vco_e4, vce_e4
+runOp 5, res_e5, acc_h_e5, acc_m_e5, acc_l_e5, vcc_e5, vco_e5, vce_e5
+runOp 6, res_e6, acc_h_e6, acc_m_e6, acc_l_e6, vcc_e6, vco_e6, vce_e6
+runOp 7, res_e7, acc_h_e7, acc_m_e7, acc_l_e7, vcc_e7, vco_e7, vce_e7
+runOp 8, res_e8, acc_h_e8, acc_m_e8, acc_l_e8, vcc_e8, vco_e8, vce_e8
+runOp 9, res_e9, acc_h_e9, acc_m_e9, acc_l_e9, vcc_e9, vco_e9, vce_e9
+runOp 10, res_e10, acc_h_e10, acc_m_e10, acc_l_e10, vcc_e10, vco_e10, vce_e10
+runOp 11, res_e11, acc_h_e11, acc_m_e11, acc_l_e11, vcc_e11, vco_e11, vce_e11
+runOp 12, res_e12, acc_h_e12, acc_m_e12, acc_l_e12, vcc_e12, vco_e12, vce_e12
+runOp 13, res_e13, acc_h_e13, acc_m_e13, acc_l_e13, vcc_e13, vco_e13, vce_e13
+runOp 14, res_e14, acc_h_e14, acc_m_e14, acc_l_e14, vcc_e14, vco_e14, vce_e14
+runOp 15, res_e15, acc_h_e15, acc_m_e15, acc_l_e15, vcc_e15, vco_e15, vce_e15
 
 break
 
