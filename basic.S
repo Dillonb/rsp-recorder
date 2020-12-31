@@ -12,75 +12,169 @@ la $2, arg2
 lqv $v02, 0, 0, $2
 
 // Run instruction once for each broadcast modifier
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 0
 la $2, res_e0
-sqv $v03, 0, 0, $2
+la $3, acc_h_e0
+la $4, acc_m_e0
+la $5, acc_l_e0
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 1
 la $2, res_e1
-sqv $v03, 0, 0, $2
+la $3, acc_h_e1
+la $4, acc_m_e1
+la $5, acc_l_e1
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 2
 la $2, res_e2
-sqv $v03, 0, 0, $2
+la $3, acc_h_e2
+la $4, acc_m_e2
+la $5, acc_l_e2
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 3
 la $2, res_e3
-sqv $v03, 0, 0, $2
+la $3, acc_h_e3
+la $4, acc_m_e3
+la $5, acc_l_e3
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 4
 la $2, res_e4
-sqv $v03, 0, 0, $2
+la $3, acc_h_e4
+la $4, acc_m_e4
+la $5, acc_l_e4
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 5
 la $2, res_e5
-sqv $v03, 0, 0, $2
+la $3, acc_h_e5
+la $4, acc_m_e5
+la $5, acc_l_e5
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 6
 la $2, res_e6
-sqv $v03, 0, 0, $2
+la $3, acc_h_e6
+la $4, acc_m_e6
+la $5, acc_l_e6
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 7
 la $2, res_e7
-sqv $v03, 0, 0, $2
+la $3, acc_h_e7
+la $4, acc_m_e7
+la $5, acc_l_e7
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 8
 la $2, res_e8
-sqv $v03, 0, 0, $2
+la $3, acc_h_e8
+la $4, acc_m_e8
+la $5, acc_l_e8
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 9
 la $2, res_e9
-sqv $v03, 0, 0, $2
+la $3, acc_h_e9
+la $4, acc_m_e9
+la $5, acc_l_e9
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 10
 la $2, res_e10
-sqv $v03, 0, 0, $2
+la $3, acc_h_e10
+la $4, acc_m_e10
+la $5, acc_l_e10
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 11
 la $2, res_e11
-sqv $v03, 0, 0, $2
+la $3, acc_h_e11
+la $4, acc_m_e11
+la $5, acc_l_e11
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 12
 la $2, res_e12
-sqv $v03, 0, 0, $2
+la $3, acc_h_e12
+la $4, acc_m_e12
+la $5, acc_l_e12
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 13
 la $2, res_e13
-sqv $v03, 0, 0, $2
+la $3, acc_h_e13
+la $4, acc_m_e13
+la $5, acc_l_e13
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 14
 la $2, res_e14
-sqv $v03, 0, 0, $2
+la $3, acc_h_e14
+la $4, acc_m_e14
+la $5, acc_l_e14
+jal saveResults
+nop
 
+vmudm $v00, $v00, $v00, 0 // Clear accumulator
 vadd $v03, $v01, $v02, 15
 la $2, res_e15
-sqv $v03, 0, 0, $2
+la $3, acc_h_e15
+la $4, acc_m_e15
+la $5, acc_l_e15
+jal saveResults
+nop
 
 break
 
 deadloop:
 	j deadloop
 	nop
+
+saveResults:
+    sqv $v03, 0, 0, $2
+    // acc_h
+    vsar $v03, $v00, $v00, 0x7
+    sqv $v03, 0, 0, $3
+    // acc_m
+    vsar $v03, $v00, $v00, 0x9
+    sqv $v03, 0, 0, $4
+    // acc_l
+    vsar $v03, $v00, $v00, 0xA
+    sqv $v03, 0, 0, $5
+    jr $ra
+    nop
 
 .data
 zero:  .word 0,0,0,0

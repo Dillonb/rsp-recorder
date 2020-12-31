@@ -132,9 +132,9 @@ int main(void) {
 
         for (int e = 0; e < 16; e++) {
             bi_usb_wr(&testcase.result_elements[e].res, sizeof(v128_t));
-            //bi_usb_wr(&testcase.result_elements[e].acch, sizeof(v128_t));
-            //bi_usb_wr(&testcase.result_elements[e].accm, sizeof(v128_t));
-            //bi_usb_wr(&testcase.result_elements[e].accl, sizeof(v128_t));
+            bi_usb_wr(&testcase.result_elements[e].acch, sizeof(v128_t));
+            bi_usb_wr(&testcase.result_elements[e].accm, sizeof(v128_t));
+            bi_usb_wr(&testcase.result_elements[e].accl, sizeof(v128_t));
         }
         /*
         for (int e = 0; e < 16; e++) {
