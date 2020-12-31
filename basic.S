@@ -1,4 +1,9 @@
 #include <ucode.S>
+
+.macro cfc2 reg, flagreg
+    .long (0b010010 << 26 | 0b00010 << 21 | \reg << 16 | \flagreg << 11)
+.endm
+
 .text
 
 lqv $v00, 0, 0, $zero
@@ -18,6 +23,9 @@ la $2, res_e0
 la $3, acc_h_e0
 la $4, acc_m_e0
 la $5, acc_l_e0
+la $6, vcc_e0
+la $7, vco_e0
+la $8, vce_e0
 jal saveResults
 nop
 
@@ -27,6 +35,9 @@ la $2, res_e1
 la $3, acc_h_e1
 la $4, acc_m_e1
 la $5, acc_l_e1
+la $6, vcc_e1
+la $7, vco_e1
+la $8, vce_e1
 jal saveResults
 nop
 
@@ -36,6 +47,9 @@ la $2, res_e2
 la $3, acc_h_e2
 la $4, acc_m_e2
 la $5, acc_l_e2
+la $6, vcc_e2
+la $7, vco_e2
+la $8, vce_e2
 jal saveResults
 nop
 
@@ -45,6 +59,9 @@ la $2, res_e3
 la $3, acc_h_e3
 la $4, acc_m_e3
 la $5, acc_l_e3
+la $6, vcc_e3
+la $7, vco_e3
+la $8, vce_e3
 jal saveResults
 nop
 
@@ -54,6 +71,9 @@ la $2, res_e4
 la $3, acc_h_e4
 la $4, acc_m_e4
 la $5, acc_l_e4
+la $6, vcc_e4
+la $7, vco_e4
+la $8, vce_e4
 jal saveResults
 nop
 
@@ -63,6 +83,9 @@ la $2, res_e5
 la $3, acc_h_e5
 la $4, acc_m_e5
 la $5, acc_l_e5
+la $6, vcc_e5
+la $7, vco_e5
+la $8, vce_e5
 jal saveResults
 nop
 
@@ -72,6 +95,9 @@ la $2, res_e6
 la $3, acc_h_e6
 la $4, acc_m_e6
 la $5, acc_l_e6
+la $6, vcc_e6
+la $7, vco_e6
+la $8, vce_e6
 jal saveResults
 nop
 
@@ -81,6 +107,9 @@ la $2, res_e7
 la $3, acc_h_e7
 la $4, acc_m_e7
 la $5, acc_l_e7
+la $6, vcc_e7
+la $7, vco_e7
+la $8, vce_e7
 jal saveResults
 nop
 
@@ -90,6 +119,9 @@ la $2, res_e8
 la $3, acc_h_e8
 la $4, acc_m_e8
 la $5, acc_l_e8
+la $6, vcc_e8
+la $7, vco_e8
+la $8, vce_e8
 jal saveResults
 nop
 
@@ -99,6 +131,9 @@ la $2, res_e9
 la $3, acc_h_e9
 la $4, acc_m_e9
 la $5, acc_l_e9
+la $6, vcc_e9
+la $7, vco_e9
+la $8, vce_e9
 jal saveResults
 nop
 
@@ -108,6 +143,9 @@ la $2, res_e10
 la $3, acc_h_e10
 la $4, acc_m_e10
 la $5, acc_l_e10
+la $6, vcc_e10
+la $7, vco_e10
+la $8, vce_e10
 jal saveResults
 nop
 
@@ -117,6 +155,9 @@ la $2, res_e11
 la $3, acc_h_e11
 la $4, acc_m_e11
 la $5, acc_l_e11
+la $6, vcc_e11
+la $7, vco_e11
+la $8, vce_e11
 jal saveResults
 nop
 
@@ -126,6 +167,9 @@ la $2, res_e12
 la $3, acc_h_e12
 la $4, acc_m_e12
 la $5, acc_l_e12
+la $6, vcc_e12
+la $7, vco_e12
+la $8, vce_e12
 jal saveResults
 nop
 
@@ -135,6 +179,9 @@ la $2, res_e13
 la $3, acc_h_e13
 la $4, acc_m_e13
 la $5, acc_l_e13
+la $6, vcc_e13
+la $7, vco_e13
+la $8, vce_e13
 jal saveResults
 nop
 
@@ -144,6 +191,9 @@ la $2, res_e14
 la $3, acc_h_e14
 la $4, acc_m_e14
 la $5, acc_l_e14
+la $6, vcc_e14
+la $7, vco_e14
+la $8, vce_e14
 jal saveResults
 nop
 
@@ -153,6 +203,9 @@ la $2, res_e15
 la $3, acc_h_e15
 la $4, acc_m_e15
 la $5, acc_l_e15
+la $6, vcc_e15
+la $7, vco_e15
+la $8, vce_e15
 jal saveResults
 nop
 
@@ -173,6 +226,15 @@ saveResults:
     // acc_l
     vsar $v03, $v00, $v00, 0xA
     sqv $v03, 0, 0, $5
+    // VCC
+    cfc2 9, 1
+    sh $9, 0($6)
+    // VCO
+    cfc2 9, 0
+    sh $9, 0($7)
+    // VCE
+    cfc2 9, 2
+    sh $9, 0($8)
     jr $ra
     nop
 

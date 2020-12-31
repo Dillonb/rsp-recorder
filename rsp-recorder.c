@@ -23,6 +23,7 @@ static void sp_handler() {
 
 #define PACKED __attribute__((__packed__))
 
+typedef uint64_t dword;
 typedef uint32_t word;
 typedef uint16_t half;
 typedef uint8_t  byte;
@@ -41,12 +42,16 @@ typedef struct v_result {
     v128_t accl;
 } v_result_t;
 
-typedef struct flag_result {
-    half vcc;
-    half vco;
-    half vce;
-    half padding;
+typedef union flag_result {
+    struct {
+        half vcc;
+        half vco;
+        half vce;
+        half padding;
+    };
+    dword packed;
 } flag_result_t;
+_Static_assert(sizeof(flag_result_t) == sizeof(dword), "flag_result_t should be 64 bits");
 
 struct {
     v128_t zero;
@@ -135,12 +140,8 @@ int main(void) {
             bi_usb_wr(&testcase.result_elements[e].acch, sizeof(v128_t));
             bi_usb_wr(&testcase.result_elements[e].accm, sizeof(v128_t));
             bi_usb_wr(&testcase.result_elements[e].accl, sizeof(v128_t));
+            bi_usb_wr(&testcase.flag_elements[e].packed, sizeof(dword));
         }
-        /*
-        for (int e = 0; e < 16; e++) {
-            bi_usb_wr(&testcase.flag_elements[e].res, sizeof(v128_t));
-        }
-         */
 
         console_render();
     }
