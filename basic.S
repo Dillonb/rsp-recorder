@@ -17,8 +17,6 @@ la $2, arg2
 lqv $v02, 0, 0, $2
 
 .macro runOp element, resAddr, acchAddr, accmAddr, acclAddr, vccAddr, vcoAddr, vceAddr
-    vor $v03, $v00, $v00, 0 // Clear res
-    vmudm $v00, $v00, $v00, 0 // Clear accumulator
     .word 0xFFFFFFFF
     la $2, \resAddr
     la $3, \acchAddr
