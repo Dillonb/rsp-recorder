@@ -15,13 +15,11 @@ extern const void __basic_ucode_end;
 static resolution_t res = RESOLUTION_320x240;
 static bitdepth_t bit = DEPTH_32_BPP;
 
-static volatile bool broke = false;
+static volatile bool rsp_execution_complete = false;
 
 static void sp_handler() {
-    broke = true;
+    rsp_execution_complete = true;
 }
-
-#define PACKED __attribute__((__packed__))
 
 typedef uint64_t dword;
 typedef uint32_t word;
@@ -80,6 +78,23 @@ void print_v128_ln(v128_t* r) {
     printf("\n");
 }
 
+word element_instruction(word instruction, int element) {
+    return instruction | (element << 21);
+}
+
+void load_replacement_ucode(word instruction, int* replacement_indices, unsigned long ucode_size) {
+    printf("Loading replacement ucode\n");
+    word* ucode = malloc(ucode_size);
+    word* uncached_ucode = UncachedAddr(ucode);
+    memcpy(uncached_ucode, &__basic_ucode_start, ucode_size);
+    for (int i = 0; i < 16; i++) {
+        uncached_ucode[replacement_indices[i]] = element_instruction(instruction, i);
+    }
+    load_ucode(uncached_ucode, ucode_size);
+    printf("Done loading.\n");
+    free(ucode);
+}
+
 int main(void) {
     /* enable interrupts (on the CPU) */
     init_interrupts();
@@ -98,7 +113,22 @@ int main(void) {
     unsigned long data_size = (unsigned long) (&__basic_ucode_start - &__basic_ucode_data_start);
     unsigned long ucode_size = (unsigned long) (&__basic_ucode_end - &__basic_ucode_start);
     load_data((void*)&__basic_ucode_data_start, data_size);
-    load_ucode((void*)&__basic_ucode_start, ucode_size);
+
+    int replacement_indices[16];
+    int found = 0;
+    word* ucodeptr = (word*)&__basic_ucode_start;
+    for (int i = 0; i < (ucode_size / 4); i++) {
+        if (ucodeptr[i] == 0xFFFFFFFF) {
+            replacement_indices[found++] = i;
+        }
+    }
+
+    if (found != 16) {
+        printf("Didn't find exactly 16 instances, found %d instead. Bad!\n", found);
+        while (true) {
+            console_render();
+        }
+    }
 
     bi_init();
 
@@ -108,32 +138,32 @@ int main(void) {
 
     console_render();
 
+    word old_instruction = 0xFFFFFFFF;
+
     while (1) {
         while (!bi_usb_can_rd()) {
             console_render();
         }
         memset(&testcase, 0, sizeof(testcase));
+        word instruction;
+        bi_usb_rd(&instruction, sizeof(word));
         bi_usb_rd(&testcase.arg1, sizeof(v128_t));
-        while (!bi_usb_can_rd()) {
-            console_render();
-        }
         bi_usb_rd(&testcase.arg2, sizeof(v128_t));
-        print_v128_ln(&testcase.arg1);
-        print_v128_ln(&testcase.arg2);
+
+        if (instruction != old_instruction) {
+            load_replacement_ucode(instruction, replacement_indices, ucode_size);
+            old_instruction = instruction;
+        }
 
         load_data(&testcase, sizeof(testcase));
         run_ucode();
 
-        while (!broke) {
+        while (!rsp_execution_complete) {
             console_render();
         }
 
         read_data(&testcase, sizeof(testcase));
-        broke = false;
-
-        printf("Result:\n");
-        print_v128_ln(&testcase.result_elements[0].res);
-        printf("\n");
+        rsp_execution_complete = false;
 
         for (int e = 0; e < 16; e++) {
             bi_usb_wr(&testcase.result_elements[e].res, sizeof(v128_t));
