@@ -29,8 +29,6 @@ lqv $v02, 0, 0, $2
     nop
 .endm
 
-
-
 // Run instruction once for each broadcast modifier
 runOp 0, res_e0, acc_h_e0, acc_m_e0, acc_l_e0, vcc_e0, vco_e0, vce_e0
 runOp 1, res_e1, acc_h_e1, acc_m_e1, acc_l_e1, vcc_e1, vco_e1, vce_e1
@@ -58,14 +56,14 @@ deadloop:
 saveResults:
     sqv $v03, 0, 0, $2
     // acc_h
-    vsar $v03, $v00, $v00, 0x8
-    sqv $v03, 0, 0, $3
+    vsar $v04, $v00, $v00, 0x8
+    sqv $v04, 0, 0, $3
     // acc_m
-    vsar $v03, $v00, $v00, 0x9
-    sqv $v03, 0, 0, $4
+    vsar $v04, $v00, $v00, 0x9
+    sqv $v04, 0, 0, $4
     // acc_l
-    vsar $v03, $v00, $v00, 0xA
-    sqv $v03, 0, 0, $5
+    vsar $v04, $v00, $v00, 0xA
+    sqv $v04, 0, 0, $5
     // VCC
     cfc2 9, 1
     sh $9, 0($6)
