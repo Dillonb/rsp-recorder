@@ -5,14 +5,19 @@ enable_language(C ASM)
 # Setup toolchain
 set(tools /usr)
 set(CMAKE_C_COMPILER ${tools}/bin/mips64-elf-gcc)
+set(CMAKE_C_LINKER ${tools}/bin/mips64-elf-ld)
 set(CMAKE_CXX_COMPILER ${tools}/bin/mips64-elf-g++)
 set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
 set(CMAKE_OBJCOPY ${tools}/bin/mips64-elf-objcopy)
 set(N64TOOL ${tools}/bin/n64tool)
 set(CHKSUM64 ${tools}/bin/chksum64)
+
+set(LINKER_SCRIPT n64.ld)
 include_directories(${tools}/mips64-elf/include)
-link_directories(${tools}/mips64-elf/lib)
 add_compile_options(-std=gnu99 -march=vr4300 -mtune=vr4300)
+set(LIBS_DIR ${tools}/mips64-elf/lib)
+
+set(CMAKE_C_LINK_EXECUTABLE   "${CMAKE_C_LINKER} -o <TARGET> <OBJECTS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> -L${LIBS_DIR} <LINK_LIBRARIES> -T${LINKER_SCRIPT}")
 
 # Build RSP microcode
 add_custom_command(OUTPUT text.section.bin data.section.bin
@@ -26,7 +31,6 @@ SET_SOURCE_FILES_PROPERTIES(loader.s OBJECT_DEPENDS "text.section.bin")
 add_executable(code.elf rsp-recorder.c sys.c sys.h bios.c bios.h loader.s)
 target_compile_options(code.elf PUBLIC -Wall -Werror -O2)
 target_link_libraries(code.elf PUBLIC dragon c m dragonsys)
-target_link_options(code.elf PUBLIC -Tn64.ld)
 
 # Package as a .z64 ROM
 set(N64_HEADER ${tools}/mips64-elf/lib/header)
