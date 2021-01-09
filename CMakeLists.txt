@@ -32,7 +32,7 @@ target_link_options(rsp-recorder.elf PUBLIC -Tn64.ld)
 # Get just the code binary format
 add_custom_command(OUTPUT rsp-recorder.bin
         COMMAND ${CMAKE_OBJCOPY} rsp-recorder.elf rsp-recorder.bin -O binary
-        MAIN_DEPENDENCY rsp-recorder.elf)
+        DEPENDS rsp-recorder.elf)
 
 # Turn it into a ROM
 set(N64_HEADER ${tools}/mips64-elf/lib/header)
