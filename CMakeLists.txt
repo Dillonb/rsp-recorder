@@ -23,19 +23,19 @@ add_custom_command(OUTPUT text.section.bin data.section.bin
 
 # Build and link main code to ELF format
 SET_SOURCE_FILES_PROPERTIES(loader.s OBJECT_DEPENDS "text.section.bin")
-add_executable(rsp-recorder.elf rsp-recorder.c sys.c sys.h bios.c bios.h loader.s)
-target_compile_options(rsp-recorder.elf PUBLIC -Wall -Werror)
-target_link_libraries(rsp-recorder.elf PUBLIC dragon c m dragonsys)
-target_link_options(rsp-recorder.elf PUBLIC -Tn64.ld)
+add_executable(code.elf rsp-recorder.c sys.c sys.h bios.c bios.h loader.s)
+target_compile_options(code.elf PUBLIC -Wall -Werror -O2)
+target_link_libraries(code.elf PUBLIC dragon c m dragonsys)
+target_link_options(code.elf PUBLIC -Tn64.ld)
 
 # Package as a .z64 ROM
 set(N64_HEADER ${tools}/mips64-elf/lib/header)
 set(N64_FLAGS -l 2M -h ${N64_HEADER})
 add_custom_command(OUTPUT rsp-recorder.z64
-        COMMAND ${CMAKE_OBJCOPY} rsp-recorder.elf rsp-recorder.bin -O binary
+        COMMAND ${CMAKE_OBJCOPY} code.elf rsp-recorder.bin -O binary
         COMMAND ${N64TOOL} ${N64_FLAGS} -o rsp-recorder.z64 -t "RSP Recorder" rsp-recorder.bin
+        COMMAND rm rsp-recorder.bin
         COMMAND ${CHKSUM64} rsp-recorder.z64
-        BYPRODUCTS rsp-recorder.bin
-        DEPENDS rsp-recorder.elf)
+        DEPENDS code.elf)
 
 add_custom_target(TARGET-rsp-recorder.z64 ALL DEPENDS rsp-recorder.z64)
