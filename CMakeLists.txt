@@ -39,3 +39,6 @@ add_custom_command(OUTPUT rsp-recorder.z64
         DEPENDS code.elf)
 
 add_custom_target(TARGET-rsp-recorder.z64 ALL DEPENDS rsp-recorder.z64)
+
+add_custom_target(console UNFLoader -r rsp-recorder.z64
+        DEPENDS rsp-recorder.z64)
